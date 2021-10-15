@@ -34,20 +34,21 @@ vue --version
 cnpm install
 ```
 
-### Compiles and hot-reloads for development
+### 启动开发服务
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npm run serve # 或cnpm run serve 
 ```
 
-### Lints and fixes files
+### 构建生产环境代码
 ```
-npm run lint
+npm run build # 或cnpm run serve 
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 运行代码检查
+```
+npm run lint # 或cnpm run serve 
+```
+
+## IDE环境配置
+如果使用VS Code的话，可以安装`Vetur`扩展程序，该扩展程序可以支持Vue项目文件的语法高亮。   
+推荐使用VS Code编辑器，下载地址请[访问官网](https://code.visualstudio.com)。
