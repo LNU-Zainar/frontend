@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <vue-progress-bar></vue-progress-bar>
     <Header v-if="!$route.meta.hideHeader"/>
     <router-view class="router-view"></router-view>
     <Footer/>
@@ -16,10 +17,28 @@ export default {
     Header,
     Footer
   },
-  data() {
-    return {
-      value: true
-    }
+  mounted () {
+    this.$Progress.finish()
+  },
+  created () {
+    this.$Progress.start()
+
+    this.$router.beforeEach((to, from, next) => {
+      //  does the page we want to go to have a meta.progress object
+      if (to.meta.progress !== undefined) {
+        let meta = to.meta.progress
+        // parse meta tags
+        this.$Progress.parseMeta(meta)
+      }
+      //  start the progress bar
+      this.$Progress.start()
+      //  continue to next page
+      next()
+    })
+
+    this.$router.afterEach(() => {
+      this.$Progress.finish()
+    })
   }
 }
 </script>

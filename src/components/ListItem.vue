@@ -56,7 +56,7 @@ export default {
   margin-right: 20px;
 }
 .item-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   line-height: 2;
 }

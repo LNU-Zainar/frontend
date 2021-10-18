@@ -9,6 +9,7 @@
       title="提示"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
+      :close-on-press-escape="false"
       :show-close="false"
       width="50%">
       <el-page-header slot="title" @back="handleBack" content="详情页面"></el-page-header>

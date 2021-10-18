@@ -12,9 +12,10 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
-  max-width: $wrapWidth;
   padding: 0 10px;
   margin: 20px auto;
   font-size: 14px;
+  text-align: center;
+  color: #787878;
 }
 </style>
