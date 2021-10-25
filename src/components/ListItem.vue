@@ -1,11 +1,14 @@
 <template>
   <div class="post-item">
     <div class="item-left">
-      <img :src="item.thumbnail" alt="">
+      <el-image
+        class="thumbnail"
+        :src="thumbnail"
+        fit="cover"></el-image>
     </div>
     <div class="right">
       <div class="item-title">
-        {{ item.name }}
+        {{ item.title }}
       </div>
       <div class="item-location">
         <span>
@@ -27,6 +30,11 @@ export default {
     item: {
       type: Object,
       default: () => ({})
+    }
+  },
+  computed: {
+    thumbnail() {
+      return this.item.images[0]
     }
   },
   data () {
@@ -62,5 +70,9 @@ export default {
 }
 .item-location {
   margin: 10px 0;
+}
+.thumbnail {
+  width: 200px;
+  height: 100px;
 }
 </style>

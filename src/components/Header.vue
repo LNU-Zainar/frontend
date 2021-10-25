@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header-wrap">
-      <a href="" class="logo">Zainar</a>
+      <router-link to="/" class="logo">Zainar</router-link>
       <nav class="nav">
         <ul class="nav-list">
           <li v-for="link in routerLinks" :key="link.text">
@@ -12,9 +12,8 @@
       <div class="user-login">
         <i class="iconfont icon-user"></i>
         <template v-if="isLogin">
-          <router-link to="/user">
-            {{ user.nickname }}
-          </router-link>，您好！
+          <router-link to="/user">{{ user.nickname }}</router-link>
+          <a @click="onLogout" class="logout">退出</a>
         </template>
         <template v-else>
           <router-link to="/login">登录</router-link>
@@ -47,6 +46,11 @@ export default {
           text: '地图查找'
         }
       ]
+    }
+  },
+  methods: {
+    onLogout () {
+      this.$store.commit('setUser', {})
     }
   }
 }
@@ -123,6 +127,10 @@ export default {
     position: relative;
     padding: 0 .3em;
     color: currentColor;
+    cursor: pointer;
+  }
+  .logout {
+
   }
 }
 </style>

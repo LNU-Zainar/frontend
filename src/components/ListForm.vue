@@ -41,7 +41,7 @@
         <el-col :span="8" style="text-align: right;">
           <el-form-item label-width="10px">
             <el-button plain>重置</el-button>
-            <el-button type="primary" plain @click="onSearch">搜索</el-button>
+            <el-button type="primary" plain icon="el-icon-search" @click="onSearch">搜索</el-button>
           </el-form-item>
         </el-col>
       </el-row>

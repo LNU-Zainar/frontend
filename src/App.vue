@@ -4,18 +4,21 @@
     <Header v-if="!$route.meta.hideHeader"/>
     <router-view class="router-view"></router-view>
     <Footer/>
+    <AddButton v-if="!$route.meta.hideAddButton"/>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import AddButton from '@/components/AddButton'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Footer
+    Footer,
+    AddButton
   },
   mounted () {
     this.$Progress.finish()

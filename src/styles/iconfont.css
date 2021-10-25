@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2873011 */
-  src: url('~@/assets/fonts/iconfont.woff2?t=1634453393667') format('woff2'),
-       url('~@/assets/fonts/iconfont.woff?t=1634453393667') format('woff'),
-       url('~@/assets/fonts/iconfont.ttf?t=1634453393667') format('truetype');
+  src: url('iconfont.woff2?t=1634550185720') format('woff2'),
+       url('iconfont.woff?t=1634550185720') format('woff'),
+       url('iconfont.ttf?t=1634550185720') format('truetype');
 }
 
 .iconfont {
@@ -32,3 +32,4 @@
 .icon-category:before {
   content: "\e636";
 }
+
