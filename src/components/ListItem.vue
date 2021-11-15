@@ -6,7 +6,7 @@
         :src="thumbnail"
         fit="cover"></el-image>
     </div>
-    <div class="right">
+    <div class="item-center">
       <div class="item-title">
         {{ item.title }}
       </div>
@@ -19,6 +19,9 @@
       <div>
         {{ item.pickTime }}
       </div>
+    </div>
+    <div class="item-right">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -62,6 +65,9 @@ export default {
 }
 .item-left {
   margin-right: 20px;
+}
+.item-center {
+  flex: 1;
 }
 .item-title {
   font-size: 16px;
