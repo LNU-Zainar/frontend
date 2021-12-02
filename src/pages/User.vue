@@ -63,7 +63,7 @@
 
             <div class="user-form-bottom">
               <el-form-item>
-                <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                <el-button type="primary" @click="onSubmit">保存</el-button>
                 <el-button @click="onCancel">取消</el-button>
               </el-form-item>
             </div>
@@ -161,6 +161,14 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    onSubmit () {
+      //
+    },
+    onCancel () {
+      //
+    }
   }
 };
 </script>

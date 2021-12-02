@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from './store'
 import List from './pages/List.vue'
 import Map from './pages/Map.vue'
 import Add from './pages/Add.vue'
@@ -29,6 +30,7 @@ const routes = [
   },
   {
     path: '/map',
+    name: 'map',
     component: Map,
     meta: {
       title: '地图查找'
@@ -36,14 +38,17 @@ const routes = [
   },
   {
     path: '/add',
+    name: 'add',
     component: Add,
     meta: {
       title: '发布',
-      hideAddButton: true
+      hideAddButton: true,
+      requireAuth: true
     }
   },
   {
     path: '/login',
+    name: 'login',
     component: Login,
     meta: {
       title: '登录注册',
@@ -53,13 +58,16 @@ const routes = [
   },
   {
     path: '/user',
+    name: 'user',
     component: User,
     meta: {
-      title: '用户中心'
+      title: '用户中心',
+      requireAuth: true
     }
   },
   {
     path: '*',
+    name: '404',
     component: NotFound,
     meta: {
       title: '404'
@@ -68,12 +76,58 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (to.hash) {
+        return {
+          selector: to.hash
+        }
+      }
+      return { x: 0, y: 0 }
+    }
+  }
+})
+
+router.onError(() => {
+  router.app.$Progress.finish()
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
-  next()
+  document.title = to.meta.title
+  if (store.getters.isLogin && to.name === 'login') {
+    next(false)
+  } else {
+    router.app.$Progress.start()
+    next()
+  }
+})
+
+router.afterEach(() => {
+  router.app.$Progress.finish()
+})
+
+router.beforeEach((to, from, next) => {
+  if (store.getters.isLogin) {
+    next()
+  } else {
+    store.dispatch('queryUser').then(next, () => {
+      // 未登录
+      if (to.meta.requireAuth) {
+        next({
+          name: 'login',
+          query: {
+            from: from.fullPath
+          }
+        })
+      }
+    })
+    if (!to.meta.requireAuth) {
+      next()
+    }
+  }
 })
 
 export default router

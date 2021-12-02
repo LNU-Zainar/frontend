@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- <ToastLoading :loading="isLoading"/> -->
     <vue-progress-bar></vue-progress-bar>
     <Header v-if="!$route.meta.hideHeader"/>
     <router-view class="router-view"></router-view>
@@ -12,13 +13,20 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import AddButton from '@/components/AddButton'
+// import ToastLoading from '@/components/ToastLoading'
 
 export default {
   name: 'App',
   components: {
     Header,
     Footer,
-    AddButton
+    AddButton,
+    // ToastLoading
+  },
+  data () {
+    return {
+      isLoading: true
+    }
   },
   mounted () {
     this.$Progress.finish()

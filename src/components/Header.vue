@@ -16,9 +16,24 @@
           <a @click="onLogout" class="logout">退出</a>
         </template>
         <template v-else>
-          <router-link to="/login">登录</router-link>
+          <router-link :to="{
+            name: 'login',
+            query: {
+              from: $route.fullPath
+            }
+          }">
+            登录
+          </router-link>
           <span class="sep">/</span>
-          <router-link to="/login?type=signup">注册</router-link>
+          <router-link :to="{
+            name: 'login',
+            query: {
+              type: 'signup',
+              from: $route.fullPath
+            }
+          }">
+            注册
+          </router-link>
         </template>
       </div>
     </div>
@@ -50,7 +65,16 @@ export default {
   },
   methods: {
     onLogout () {
-      this.$store.commit('setUser', {})
+      this.$store.dispatch('logout').then(() => {
+        if (this.$route.meta.requireAuth) {
+          this.$router.push({
+            name: 'login',
+            query: {
+              from: this.$route.fullPath
+            }
+          })
+        }
+      })
     }
   }
 }

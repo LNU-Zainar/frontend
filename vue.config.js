@@ -13,5 +13,8 @@ module.exports = {
         additionalData: `@import "~@/styles/vars.scss";`
       }
     }
+  },
+  devServer: {
+    proxy: 'http://182.61.16.208'
   }
 }
