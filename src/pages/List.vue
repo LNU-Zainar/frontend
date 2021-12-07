@@ -1,30 +1,23 @@
 <template>
   <div class="list">
-    <ListForm/>
+    <ListForm :form-model="formModel" @submit="onSearch"/>
     <div class="list-main">
-      <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click.native="handleItemClick(item)"/>
+      <template v-if="listLoading">
+        <ListItem v-for="i in 5" :key="i" :is-skeleton="true"/>
+      </template>
+      <template v-else-if="lostItems.length">
+        <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click="handleItemClick(item)"/>
+      </template>
+      <el-empty v-else description="暂无物品招领信息"></el-empty>
     </div>
-
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :show-close="false"
-      width="50%">
-      <el-page-header slot="title" @back="handleBack" content="帖子详情"></el-page-header>
-      <PostDetail :id="displayedPost"/>
-    </el-dialog>
 
     <div class="list-pagination">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[20, 40, 60, 80]"
-        :page-size="20"
+        :page-sizes="[10, 20, 40, 60, 80]"
+        :current-page.sync="currentPage"
+        :page-size.sync="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+        :total="total">
       </el-pagination>
     </div>
   </div>
@@ -33,114 +26,72 @@
 <script>
 import ListForm from '@/components/ListForm'
 import ListItem from '@/components/ListItem'
-import PostDetail from '@/components/PostDetail'
+import * as api from '@/common/api'
 
 export default {
   name: '',
   components: {
     ListForm,
-    ListItem,
-    PostDetail
-  },
-  watch: {
-    '$route.name': {
-      immediate: true,
-      handler (value) {
-        if (value === 'post') {
-          this.dialogVisible = true
-          this.fetchItemData()
-        }
-      }
-    }
+    ListItem
   },
   data () {
     return {
+      formModel: {
+        keyword: undefined,
+        location: undefined,
+        category: undefined,
+        date: []
+      },
       dialogVisible: false,
-      displayedPost: null,
-      lostItems: [
-        {
-          title: '校园卡',
-          category: '校园卡',
-          location: '图书馆',
-          pickTime: '2021-10-03',
-          images: [
-            'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-            'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-            'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-            'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
-          ]
-        },
-        {
-          title: '藏青色雨伞',
-          category: '雨伞',
-          location: '鹏园',
-          pickTime: '2021-10-04',
-          images: [
-            'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-            'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-            'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-            'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
-          ]
-        },
-        {
-          title: '藏青色雨伞',
-          category: '雨伞',
-          location: '鹏园',
-          pickTime: '2021-10-04',
-          images: [
-            'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-            'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-            'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-            'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
-          ]
-        },
-        {
-          title: '藏青色雨伞',
-          category: '雨伞',
-          location: '鹏园',
-          pickTime: '2021-10-04',
-          images: [
-            'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
-            'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-            'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-            'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-            'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-            'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg'
-          ]
-        }
-      ],
-      currentPage: 1
+      listLoading: true,
+      lostItems: [],
+      total: 0,
+      currentPage: 1,
+      pageSize: 10
     }
   },
+  mounted () {
+    this.$watch(() => {
+      return this.currentPage + ',' + this.pageSize
+    }, this.fetchListItems, {
+      immediate: true
+    })
+  },
   methods: {
-    handleSizeChange () {},
-    handleCurrentChange () {},
-    handleBack () {
-      this.dialogVisible = false
-      this.$router.go(-1)
-    },
     handleItemClick (item) {
-      this.displayedPost = item
-      this.dialogVisible = true
       this.$router.push({
         name: 'post',
         params: {
-          id: 20
+          id: item.id
         }
       })
     },
-    fetchItemData () {
-      console.log('fetch item data')
+    fetchListItems () {
+      this.listLoading = true
+      const fm = this.formModel
+      const date = fm.date
+      const startDate = date[0] ? date[0].getTime() : undefined
+      const endDate = date[1] ? date[1].getTime() : undefined
+      api.getItems({
+        keyword: fm.keyword,
+        location_id: fm.location,
+        category_id: fm.category,
+        start_date: startDate,
+        end_date: endDate,
+        page_size: this.pageSize,
+        cur_page: this.currentPage
+      }, {
+        notifyType: 'f'
+      }).then(data => {
+        this.total = data.total
+        this.lostItems = data.list
+      }).finally(() => {
+        this.listLoading = false
+      })
+    },
+    onSearch () {
+      console.log(this.formModel)
+      this.fetchListItems()
     }
   }
 }

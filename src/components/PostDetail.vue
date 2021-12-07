@@ -1,53 +1,81 @@
 <template>
   <div class="post-detail">
-    <el-descriptions title="校园卡">
-      <el-descriptions-item label="物品分类">
-        <el-tag size="small">
-          {{ post.category }}
-        </el-tag>
-      </el-descriptions-item>
-      <el-descriptions-item label="捡到地点">
-        {{ post.location }}
-      </el-descriptions-item>
-      <el-descriptions-item label="捡到时间">
-        {{ post.pickTime }}
-      </el-descriptions-item>
-      <el-descriptions-item label="补充描述" :span="3">
-        {{ post.description }}
-      </el-descriptions-item>
-  </el-descriptions>
+    <template v-if="!isLoading">
+      <el-descriptions :title="post.title">
+        <el-descriptions-item label="物品分类">
+          <el-tag size="small">
+            {{ post.category_id }}
+          </el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="捡到地点">
+          {{ post.location_id }}
+        </el-descriptions-item>
+        <el-descriptions-item label="捡到时间">
+          {{ post.update_date }}
+        </el-descriptions-item>
+        <el-descriptions-item label="补充描述" :span="3">
+          {{ post.description }}
+        </el-descriptions-item>
+      </el-descriptions>
 
-  <el-image v-for="url in post.images" :key="url" :src="url" lazy></el-image>
+      <el-image v-for="(url, index) in post.images || []" :key="index" :src="url" lazy></el-image>
+    </template>
+    <el-skeleton v-else :loading="true" animated>
+      <div slot="template">
+          <el-skeleton-item variant="p" style="width: 200px;" />
+          
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; margin: 20px 0;">
+            <el-skeleton-item variant="text" style="width: 20%;" />
+            <el-skeleton-item variant="text" style="width: 20%;" />
+            <el-skeleton-item variant="text" style="width: 20%;" />
+          </div>
+
+          <el-skeleton-item variant="text" style="margin-right: 16px;" />
+          <el-skeleton-item variant="text" style="margin-right: 16px;" />
+          <el-skeleton-item variant="text" style="width: 30%;" />
+
+        <el-skeleton-item variant="image" style="margin-top: 20px; width: 100%; height: 300px;"/>
+      </div>
+    </el-skeleton>
   </div>
 </template>
 
 <script>
+import * as api from '@/common/api'
+
 export default {
   name: '',
-  props: {
-    id: {
-      type: [Number, String],
-      default: ''
+  data () {
+    return { 
+      isLoading: false,
+      post: {}
     }
   },
-  data () {
-    return {
-      post: {
-        name: '校园卡',
-        category: '校园卡',
-        location: '图书馆',
-        pickTime: '2021-10-03',
-        description: '请丢失物品的同学，在19:00-22:00期间与我联系。',
-        images: [
-          'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-          'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-          'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-          'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-          'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-          'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-          'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
-        ]
+  watch: {
+    '$route.params.id' (value) {
+      if (value) {
+        this.post = {}
+        this.fetchItem()
       }
+    }
+  },
+  mounted () {
+    this.fetchItem()
+  },
+  methods: {
+    fetchItem () {
+      this.isLoading = true
+      api.getItem(null, {
+        notifyType: 'f',
+        pathParams: {
+          id: this.$route.params.id
+        }
+      }).then(data => {
+        this.post = data
+      }).finally(() => {
+        this.isLoading = false
+      })
     }
   }
 }

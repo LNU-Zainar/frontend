@@ -120,7 +120,7 @@ export default {
   },
   computed: {
     captchaUrl () {
-      return 'http://182.61.16.208/auth/captcha.png?cur_id=' + this.uuid
+      return process.env.VUE_APP_SERVER_URL + '/auth/captcha.png?cur_id=' + this.uuid
     }
   },
   watch: {

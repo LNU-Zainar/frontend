@@ -14,61 +14,63 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    setUser (state, user) {
-      state.user = user
+    setUser (state, data) {
+      state.user = {
+        id: data.uid,
+        nickname: data.nickname,
+        avatar: data.avatar,
+        phone: data.phone,
+        email: data.email,
+        desc: data.desc
+      }
+    },
+    clearUser (state) {
+      state.user = {}
     }
   },
   actions: {
-    register ({ commit }, data) {
+    register (context, data) {
       return new Promise((resolve, reject) => {
-        api.register(data, {
-          // notifyType: 'f'
-        }).then(data => {
-          commit('setUser', {
-            id: data.uid,
-            nickname: data.nickname
-          })
-          resolve()
+        api.register(data).then(data => {
+          context.commit('setUser', data)
+          resolve(data)
         }, reject)
       })
     },
-    login ({ commit }, data) {
+    login (context, data) {
       return new Promise((resolve, reject) => {
-        api.login(data, {
-          notifyType: 'f'
-        }).then(data => {
-          commit('setUser', {
-            id: data.uid,
-            nickname: data.nickname
-          })
-          resolve()
+        api.login(data).then(data => {
+          context.commit('setUser', data)
+          resolve(data)
         }, reject)
       })
     },
     logout ({ commit }) {
       return new Promise((resolve, reject) => {
-        api.logout(null, {
-          notifyType: 'fs'
-        }).then(() => {
-          commit('setUser', {})
-          resolve()
+        api.logout().then(data => {
+          commit('clearUser')
+          resolve(data)
         }, reject)
       })
     },
-    queryUser ({ commit }) {
+    queryUser (context) {
       return new Promise((resolve, reject) => {
         api.getUserInfo(null, {
           notifyType: ''
         }).then(data => {
-          commit('setUser', {
-            id: data.uid,
-            nickname: data.nickname,
-            avatar: data.avatar
-          })
-          resolve()
+          context.commit('setUser', data)
+          resolve(data)
         }, reject)
       })
     },
+    modifyUser (context, data) {
+      return new Promise((resolve, reject) => {
+        api.putUserInfo(data).then(data => {
+          context.commit('setUser', data)
+          resolve(data)
+        }, reject)
+      })
+    }
   }
 })
 

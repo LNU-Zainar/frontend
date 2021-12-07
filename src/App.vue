@@ -1,11 +1,23 @@
 <template>
   <div id="app">
-    <!-- <ToastLoading :loading="isLoading"/> -->
     <vue-progress-bar></vue-progress-bar>
     <Header v-if="!$route.meta.hideHeader"/>
     <router-view class="router-view"></router-view>
     <Footer/>
     <AddButton v-if="!$route.meta.hideAddButton"/>
+
+    <el-dialog
+      title="帖子详情"
+      :visible="dialogVisible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      width="50%">
+      <el-page-header slot="title" @back="handleBack" content="帖子详情">
+        <div>关闭</div>
+      </el-page-header>
+      <PostDetail/>
+    </el-dialog>
   </div>
 </template>
 
@@ -13,7 +25,7 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import AddButton from '@/components/AddButton'
-// import ToastLoading from '@/components/ToastLoading'
+import PostDetail from '@/components/PostDetail'
 
 export default {
   name: 'App',
@@ -21,35 +33,25 @@ export default {
     Header,
     Footer,
     AddButton,
-    // ToastLoading
+    PostDetail
   },
-  data () {
-    return {
-      isLoading: true
+  computed: {
+    dialogVisible () {
+      return this.$route.name === 'post' || this.$route.name === 'user-post'
     }
   },
-  mounted () {
-    this.$Progress.finish()
-  },
-  created () {
-    this.$Progress.start()
-
-    this.$router.beforeEach((to, from, next) => {
-      //  does the page we want to go to have a meta.progress object
-      if (to.meta.progress !== undefined) {
-        let meta = to.meta.progress
-        // parse meta tags
-        this.$Progress.parseMeta(meta)
-      }
-      //  start the progress bar
-      this.$Progress.start()
-      //  continue to next page
-      next()
-    })
-
-    this.$router.afterEach(() => {
-      this.$Progress.finish()
-    })
+  methods: {
+    handleBack () {
+      let parentRoute = null
+      this.$route.matched.some(route => {
+        if (route.name === this.$route.name) {
+          return true
+        } else {
+          parentRoute = route
+        }
+      })
+      this.$router.replace(parentRoute)
+    }
   }
 }
 </script>

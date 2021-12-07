@@ -47,6 +47,16 @@ const routes = [
     }
   },
   {
+    path: '/edit/:id',
+    name: 'edit',
+    component: Add,
+    meta: {
+      title: '编辑',
+      hideAddButton: true,
+      requireAuth: true
+    }
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login,
@@ -63,7 +73,16 @@ const routes = [
     meta: {
       title: '用户中心',
       requireAuth: true
-    }
+    },
+    children: [
+      {
+        name: 'user-post',
+        path: 'posts/:id',
+        meta: {
+          title: '详情'
+        }
+      }
+    ]
   },
   {
     path: '*',
@@ -86,7 +105,6 @@ const router = new VueRouter({
           selector: to.hash
         }
       }
-      return { x: 0, y: 0 }
     }
   }
 })
@@ -113,18 +131,23 @@ router.beforeEach((to, from, next) => {
   if (store.getters.isLogin) {
     next()
   } else {
-    store.dispatch('queryUser').then(next, () => {
+    const requireAuth = to.matched.some(route => {
+      return route.meta.requireAuth
+    })
+    store.dispatch('queryUser').then(() => {
+      next()
+    }, () => {
       // 未登录
-      if (to.meta.requireAuth) {
+      if (requireAuth) {
         next({
           name: 'login',
           query: {
-            from: from.fullPath
+            from: to.fullPath
           }
         })
       }
     })
-    if (!to.meta.requireAuth) {
+    if (!requireAuth) {
       next()
     }
   }

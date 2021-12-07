@@ -66,7 +66,10 @@ export default {
   methods: {
     onLogout () {
       this.$store.dispatch('logout').then(() => {
-        if (this.$route.meta.requireAuth) {
+        const requireAuth = this.$route.matched.some(route => {
+          return route.meta.requireAuth
+        })
+        if (requireAuth) {
           this.$router.push({
             name: 'login',
             query: {
@@ -82,7 +85,8 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  background: rgba($primaryColor, .1);
+  background: rgba($primaryColor, 0.1);
+  height: 50px;
   &-wrap {
     display: flex;
     justify-content: space-between;
@@ -120,6 +124,8 @@ export default {
     line-height: 50px;
     display: inline-block;
     transition: all .3s;
+    color: #333;
+    font-weight: bold;
 
     &:after {
         content: '';
@@ -135,7 +141,6 @@ export default {
       }
 
     &.router-link-exact-active  {
-      font-weight: bold;
       color: rgba($primaryColor, 1);
       &:after {
         opacity: 1;
