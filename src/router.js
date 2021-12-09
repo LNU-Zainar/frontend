@@ -4,6 +4,8 @@ import store from './store'
 import List from './pages/List.vue'
 import Map from './pages/Map.vue'
 import Add from './pages/Add.vue'
+import About from './pages/About.vue'
+import Post from './pages/Post.vue'
 import User from './pages/User.vue'
 import Login from './pages/Login.vue'
 import NotFound from './pages/NotFound.vue'
@@ -14,19 +16,19 @@ const routes = [
   {
     path: '/',
     name: 'index',
+    alias: '/post',
     component: List,
     meta: {
       title: '首页'
     },
-    children: [
-      {
-        name: 'post',
-        path: 'post/:id',
-        meta: {
-          title: '详情'
-        }
-      }
-    ]
+  },
+  {
+    name: 'post',
+    path: '/post/:id',
+    component: Post,
+    meta: {
+      title: '详情'
+    }
   },
   {
     path: '/map',
@@ -73,16 +75,16 @@ const routes = [
     meta: {
       title: '用户中心',
       requireAuth: true
-    },
-    children: [
-      {
-        name: 'user-post',
-        path: 'posts/:id',
-        meta: {
-          title: '详情'
-        }
-      }
-    ]
+    }
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About,
+    meta: {
+      title: '关于我们',
+      requireAuth: false
+    }
   },
   {
     path: '*',

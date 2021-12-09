@@ -10,7 +10,7 @@
 
         <el-col :span="8">
           <el-form-item label="捡到地点" label-width="80px" prop="location">
-            <el-select v-model="formModel.location" placeholder="请选择捡到地点">
+            <el-select v-model="formModel.location" placeholder="请选择捡到地点" filterable>
               <el-option v-for="item in locationOptions" :key="item.label" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
@@ -19,7 +19,7 @@
         
         <el-col :span="8">
           <el-form-item label="物品分类" label-width="80px" prop="category">
-            <el-select v-model="formModel.category" placeholder="请选择物品分类">
+            <el-select v-model="formModel.category" placeholder="请选择物品分类" filterable>
               <el-option v-for="item in categoryOptions" :key="item.label" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>

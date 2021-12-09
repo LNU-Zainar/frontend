@@ -1,29 +1,56 @@
 <template>
   <div class="post-detail">
     <template v-if="!isLoading">
-      <el-descriptions :title="post.title">
+      <el-descriptions>
+        <h1 slot="title">
+          {{ post.title }}
+        </h1>
+
+        <el-descriptions-item label="发布用户">
+          {{ post.poster.nickname }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="联系电话">
+          {{ post.phone }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="邮箱地址">
+          {{ post.poster.email }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="捡到地点">
+          {{ post.location_id }}
+        </el-descriptions-item>
+
         <el-descriptions-item label="物品分类">
           <el-tag size="small">
             {{ post.category_id }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="捡到地点">
-          {{ post.location_id }}
-        </el-descriptions-item>
+
         <el-descriptions-item label="捡到时间">
           {{ post.update_date }}
         </el-descriptions-item>
+
         <el-descriptions-item label="补充描述" :span="3">
           {{ post.description }}
         </el-descriptions-item>
       </el-descriptions>
 
-      <el-image v-for="(url, index) in post.images || []" :key="index" :src="url" lazy></el-image>
+      <ImagesWall :images="post.images"/>
+
     </template>
     <el-skeleton v-else :loading="true" animated>
       <div slot="template">
-          <el-skeleton-item variant="p" style="width: 200px;" />
+          <el-skeleton-item variant="p" style="width: 200px; height: 32px; margin: 30px 0;" />
           
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; margin: 20px 0;">
+            <el-skeleton-item variant="text" style="width: 20%;" />
+            <el-skeleton-item variant="text" style="width: 20%;" />
+            <el-skeleton-item variant="text" style="width: 20%;" />
+          </div>
+
           <div
             style="display: flex; align-items: center; justify-content: space-between; margin: 20px 0;">
             <el-skeleton-item variant="text" style="width: 20%;" />
@@ -43,13 +70,19 @@
 
 <script>
 import * as api from '@/common/api'
+import ImagesWall from '@/components/ImagesWall'
 
 export default {
   name: '',
+  components: {
+    ImagesWall
+  },
   data () {
     return { 
       isLoading: false,
-      post: {}
+      post: {
+        poster: {}
+      }
     }
   },
   watch: {
@@ -82,5 +115,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.poster {
+  margin-top: -3px;
+  display: flex;
+  align-items: center;
+  .el-avatar {
+    margin-right: 10px;
+  }
+}
 </style>

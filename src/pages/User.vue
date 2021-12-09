@@ -81,7 +81,7 @@
         <ListItem v-for="i in 5" :key="i" :is-skeleton="true"/>
       </template>
         <template v-else-if="lostItems.length">
-          <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click="handleItemClick(item, $event)">
+          <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click="handleItemClick(item)">
             <div class="user-post-actions">
               <el-button size="mini" type="default" icon="el-icon-edit" @click="handleItemEdit(item)">
                 编辑
@@ -256,7 +256,7 @@ export default {
     httpRequest: upload,
     handleItemClick (item) {
       this.$router.push({
-        name: 'user-post',
+        name: 'post',
         params: {
           id: item.id
         }

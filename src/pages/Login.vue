@@ -124,7 +124,7 @@ export default {
       'isLogin'
     ]),
     captchaUrl () {
-      return (process.env.NODE_ENV === 'development' ? process.env.VUE_APP_SERVER_URL : process.env.BASE_URL) + '/auth/captcha.png?cur_id=' + this.uuid
+      return (process.env.NODE_ENV === 'development' ? process.env.VUE_APP_SERVER_URL : '') + '/auth/captcha.png?cur_id=' + this.uuid
     }
   },
   watch: {

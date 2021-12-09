@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import path from './path.json'
+import mapAreaPath from '@/assets/mapAreaPath.json'
 import * as api from '@/common/api'
 /* global AMap */
 
@@ -58,7 +58,7 @@ export default {
       })
     },
     initMap () {
-      const bounds = [path.map(item => [item.R, item.Q])]
+      const bounds = [mapAreaPath.map(item => [item.R, item.Q])]
 
       const map = new AMap.Map('container', {
         // mask: bounds,

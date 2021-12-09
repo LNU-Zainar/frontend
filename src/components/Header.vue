@@ -5,7 +5,10 @@
       <nav class="nav">
         <ul class="nav-list">
           <li v-for="link in routerLinks" :key="link.text">
-            <router-link :to="link.to" :class="{'is-active': $route.name === link.to.name}">{{link.text}}</router-link>
+            <router-link :to="link.to" :class="{'is-active': checkIsActive(link.to)}">
+              <i :class="link.icon"></i>
+              {{link.text}}
+            </router-link>
           </li>
         </ul>
       </nav>
@@ -47,23 +50,35 @@ export default {
   name: 'Header',
   computed: {
     ...mapGetters(['isLogin']),
-    ...mapState(['user'])
+    ...mapState(['user', 'isUserLoading'])
   },
   data () {
     return {
       routerLinks: [
         {
           to: { name: 'index' },
-          text: '失物招领'
+          text: '失物招领',
+          icon: 'iconfont icon-category'
         },
         {
           to: { name: 'map' },
-          text: '地图查找'
+          text: '地图查找',
+          icon: 'iconfont icon-location'
+        },
+        {
+          to: { name: 'about' },
+          text: '关于我们',
+          icon: 'iconfont icon-sad'
         }
       ]
     }
   },
   methods: {
+    checkIsActive (item) {
+      return this.$route.matched.some(route => {
+        return item.name === route.name
+      })
+    },
     onLogout () {
       this.$store.dispatch('logout').then(() => {
         const requireAuth = this.$route.matched.some(route => {
@@ -103,63 +118,65 @@ export default {
       color: rgba($primaryColor, 1);
     }
   }
-
-  .logo {
-    margin-left: 10px;
-    font-size: 22px;
-    font-weight: bold;
-    color: rgba($primaryColor, 1);
-  }
 }
 
+.logo {
+  flex-basis: 25%;
+  margin-left: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  color: rgba($primaryColor, 1);
+}
 
-.nav-list {
-  display: flex;
-  li {
-    padding: 0 18px;
-    line-height: 50px;
-  }
-  a {
-    position: relative;
-    line-height: 50px;
-    display: inline-block;
-    transition: all .3s;
-    color: #333;
-    font-weight: bold;
+.nav {
+  flex-basis: 50%;
+  &-list {
+    display: flex;
+    li {
+      padding: 0 18px;
+      line-height: 50px;
+    }
+    a {
+      position: relative;
+      line-height: 50px;
+      display: inline-block;
+      transition: all .3s;
+      color: #333;
+      font-weight: bold;
 
-    &:after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 8px;
-        width: 4px;
-        height: 4px;
-        border-radius: 4px;
-        background: $primaryColor;
-        opacity: 0;
-      }
-
-    &.is-active  {
-      color: rgba($primaryColor, 1);
       &:after {
-        opacity: 1;
+          content: '';
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 8px;
+          width: 4px;
+          height: 4px;
+          border-radius: 4px;
+          background: $primaryColor;
+          opacity: 0;
+        }
+
+      &.is-active  {
+        color: rgba($primaryColor, 1);
+        &:after {
+          opacity: 1;
+        }
       }
     }
   }
 }
 
 .user-login {
+  flex-basis: 25%;
   font-size: 14px;
   color: #111;
+  text-align: right;
   a {
     position: relative;
     padding: 0 .3em;
     color: currentColor;
     cursor: pointer;
-  }
-  .logout {
-
   }
 }
 </style>
