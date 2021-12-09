@@ -114,7 +114,7 @@ router.onError(() => {
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = process.env.VUE_APP_TITLE + '-' + to.meta.title
   if (store.getters.isLogin && to.name === 'login') {
     next(false)
   } else {

@@ -1,11 +1,12 @@
 const mockMiddleware = require('./mock')
 
 module.exports = {
+  outputDir: 'static',
   chainWebpack: config => {
       config
         .plugin('html')
         .tap(args => {
-          args[0].title = '在哪儿'
+          args[0].title = process.env.VUE_APP_TITLE
           return args
         })
   },
