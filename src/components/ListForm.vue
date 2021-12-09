@@ -86,7 +86,7 @@ export default {
         notifyType: 'f'
       }).then(data => {
         data.forEach(item => {
-          this.locationOptions.push({
+          this.categoryOptions.push({
             label: item.category_name,
             value: item.id
           })
@@ -96,7 +96,7 @@ export default {
         notifyType: 'f'
       }).then(data => {
         data.forEach(item => {
-          this.categoryOptions.push({
+          this.locationOptions.push({
             label: item.location_name,
             value: item.id
           })

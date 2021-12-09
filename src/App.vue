@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="'page-' + $route.name">
     <vue-progress-bar></vue-progress-bar>
     <Header v-if="!$route.meta.hideHeader"/>
     <router-view class="router-view"></router-view>
@@ -60,5 +60,17 @@ export default {
 .router-view {
   max-width: $wrapWidth;
   margin: 30px auto;
+}
+.page-map {
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 5px;
+    pointer-events: none;
+    color: rgba(255,255,255, .6);
+    text-shadow: 1px 0 0 black, 0 1px 0 black, -1px 0 0 black,0 -1px 0 black
+  }
 }
 </style>

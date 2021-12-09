@@ -15,7 +15,7 @@ import * as api from '@/common/api'
 export default {
   data () {
     return {
-      isLoading: false,
+      isLoading: true,
       locations: []
     }
   },
@@ -147,6 +147,9 @@ export default {
       }
 
       this.locations.forEach(item => {
+        if (!item.items_total) {
+          return false
+        }
         const markerContent = `
         <div class="map-marker">
           <div class="${item.items_total ? 'map-marker-img' : 'map-marker-img is-empty'}">
@@ -158,11 +161,20 @@ export default {
         </div>
         `
         
-        const infoContent = `
+        const infoContent = item.items_total
+         ? `
         <div class="info-window">
           <h6 class="location-name">${item.location_name}</h6>
           <p class="detail">
-            一共<strong class="count">${item.items_total}</strong>件遗失物品
+            共有<strong class="count">${item.items_total}</strong>件物品正在招领
+          </p>
+        </div>
+        `
+        : `
+        <div class="info-window">
+          <h6 class="location-name">${item.location_name}</h6>
+          <p class="detail">
+            暂无物品招领信息
           </p>
         </div>
         `
