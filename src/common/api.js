@@ -12,18 +12,21 @@ const APIDescriptions = {
   register: 'POST /auth/register',
   login: 'POST /auth/login',
   logout: 'POST /auth/logout',
-  getUserInfo: 'GET /userinfo',
-  putUserInfo: 'PUT /userinfo',
+  getUserInfo: 'GET /users',
+  putUserInfo: 'PUT /users',
+  modifyPassword: 'PATCH /users',
+
   getItems: 'GET /items',
   postItem: 'POST /items',
+  getItem: 'GET /items/:id',
+
+  getUserItems: 'GET /item',
+  deleteUserItem: 'DELETE /item/:id',
   putItem: 'PUT /item/:id',
-  getItem: 'GET /item/:id',
+  
   getUploadToken: 'GET /upload_token',
   getCategory: 'GET /category',
   getLocation: 'GET /location',
-  getUserItems: 'GET /user/items',
-  deleteUserItem: 'DELETE /items/:id',
-  modifyPassword: 'PATCH /users',
   getMapLocation: 'GET /map_location'
 }
 

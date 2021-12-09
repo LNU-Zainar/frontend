@@ -1,9 +1,19 @@
 <template>
   <div v-loading="isLoading">
     <el-form ref="form" :model="form" :rules="formRules" label-width="80px">
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="form.title"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="16">
+          <el-form-item label="标题" prop="title">
+            <el-input v-model="form.title"></el-input>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="8">
+          <el-form-item label="联系电话" prop="phone">
+            <el-input v-model="form.phone"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
       <el-row>
         <el-col :span="8">
@@ -23,14 +33,14 @@
         </el-col>
 
         <el-col :span="8">
-          <el-form-item label="捡到日期" prop="date">
-            <el-date-picker type="date" placeholder="选择日期" v-model="form.date"></el-date-picker>
+          <el-form-item label="捡到时间" prop="date">
+            <el-date-picker type="datetime" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
       
-      <el-form-item label="详细描述" prop="desc">
-        <el-input type="textarea" v-model="form.desc" rows="5"></el-input>
+      <el-form-item label="详细描述" prop="description">
+        <el-input type="textarea" v-model="form.description" rows="5"></el-input>
       </el-form-item>
 
       <el-form-item label="上传图片" prop="pictures">
@@ -68,6 +78,7 @@
 <script>
 import * as api from '@/common/api'
 import { upload } from '@/common/cos'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -77,23 +88,23 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       limit: 9,
-      locationOptions: [
-        { label: '全部', value: undefined }
-      ],
-      categoryOptions: [
-        { label: '全部', value: undefined }
-      ],
+      locationOptions: [],
+      categoryOptions: [],
       form: {
         title: '',
         category: '',
         location: '',
         date: '',
-        desc: '',
+        description: '',
+        phone: '',
         picturesList: []
       },
       formRules: {
         title: [
           { required: true, message: '请输入标题', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请输入联系电话', trigger: 'blur' }
         ],
         category: [
           { required: true, message: '请选择分类', trigger: 'change' }
@@ -108,6 +119,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'user'
+    ]),
     isEdit () {
       return this.$route.name === 'edit'
     },
@@ -139,6 +153,11 @@ export default {
   },
   mounted () {
     this.fetchFormConfigs()
+    if (!this.isEdit) {
+      if (this.user.phone) {
+        this.form.phone = this.user.phone
+      }
+    }
   },
   methods: {
     fetchFormConfigs () {
@@ -146,8 +165,8 @@ export default {
         notifyType: 'f'
       }).then(data => {
         data.forEach(item => {
-          this.locationOptions.push({
-            label: item.name,
+          this.categoryOptions.push({
+            label: item.category_name,
             value: item.id
           })
         })
@@ -156,8 +175,8 @@ export default {
         notifyType: 'f'
       }).then(data => {
         data.forEach(item => {
-          this.categoryOptions.push({
-            label: item.name,
+          this.locationOptions.push({
+            label: item.location_name,
             value: item.id
           })
         })
@@ -177,8 +196,9 @@ export default {
           title: data.title,
           category: data.category_id,
           location: data.location_id,
-          date: data.pickup_date,
-          desc: data.desc
+          date: data.pickup_time,
+          description: data.description,
+          phone: data.phone
         })
       }).finally(() => {
         this.isLoading = false
@@ -224,8 +244,9 @@ export default {
             title: this.form.title,
             location_id: this.form.location,
             category_id: this.form.category,
-            pickup_date: this.form.date,
-            description: this.form.desc,
+            pickup_time: this.form.date,
+            description: this.form.description,
+            phone: this.form.phone,
             images: this.imageUrls
           }, {
             pathParams: {
@@ -244,8 +265,9 @@ export default {
             title: this.form.title,
             location_id: this.form.location,
             category_id: this.form.category,
-            pickup_date: this.form.date,
-            description: this.form.desc,
+            pickup_time: this.form.date,
+            description: this.form.description,
+            phone: this.form.phone,
             images: this.imageUrls
           }).then(data => {
             console.log('post success', data)

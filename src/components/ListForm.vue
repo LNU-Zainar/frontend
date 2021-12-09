@@ -1,6 +1,6 @@
 <template>
   <div class="posts-filter-form">
-    <el-form ref="form" :model="formModel" size="medium">
+    <el-form ref="form" :model="formModel" size="small">
       <el-row>
         <el-col :span="8">
           <el-form-item label="标题" label-width="40px" prop="keyword">
@@ -87,7 +87,7 @@ export default {
       }).then(data => {
         data.forEach(item => {
           this.locationOptions.push({
-            label: item.name,
+            label: item.category_name,
             value: item.id
           })
         })
@@ -97,7 +97,7 @@ export default {
       }).then(data => {
         data.forEach(item => {
           this.categoryOptions.push({
-            label: item.name,
+            label: item.location_name,
             value: item.id
           })
         })

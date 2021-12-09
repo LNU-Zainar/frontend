@@ -3,7 +3,7 @@
     <div id="container"
       v-loading="isLoading"
       element-loading-text="地图加载中"
-      element-loading-background="#1a1a1a">
+      element-loading-background="#1a232c">
     </div>
   </div>
 </template>
@@ -35,6 +35,9 @@ export default {
   },
   destroyed () {
     this.script.remove()
+    if (this.map) {
+      this.map.destroy()
+    }
   },
   methods: {
     fetchData () {
@@ -70,7 +73,7 @@ export default {
         viewMode:'2D',
         pitch: 50,
         center: [110.347924, 21.268779],
-        mapStyle: 'amap://styles/dark',
+        mapStyle: 'amap://styles/grey',
         layers: [
           new AMap.createDefaultLayer({
             visible: true,
@@ -146,8 +149,8 @@ export default {
       this.locations.forEach(item => {
         const markerContent = `
         <div class="map-marker">
-          <div class="map-marker-img">
-            ${item.items_total > 99 ? '99+' : item.items_total}
+          <div class="${item.items_total ? 'map-marker-img' : 'map-marker-img is-empty'}">
+            ${item.items_total ? (item.items_total > 99 ? '99+' : item.items_total) : ''}
           </div>
           <div class="map-marker-label">
             ${item.location_name}

@@ -37,6 +37,9 @@ a {
     background-size: contain;
     text-align: center;
     color: #fff;
+    &.is-empty {
+      background-image: url("/images/marker_blue.png");
+    }
   }
   &-label {
     display: none;

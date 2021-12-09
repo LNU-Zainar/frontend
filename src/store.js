@@ -21,7 +21,7 @@ const store = new Vuex.Store({
         avatar: data.avatar,
         phone: data.phone,
         email: data.email,
-        desc: data.desc
+        description: data.description
       }
     },
     clearUser (state) {
@@ -39,9 +39,10 @@ const store = new Vuex.Store({
     },
     login (context, data) {
       return new Promise((resolve, reject) => {
-        api.login(data).then(data => {
-          context.commit('setUser', data)
-          resolve(data)
+        api.login(data, {
+          notifyType: 'f'
+        }).then(() => {
+          context.dispatch('queryUser').then(resolve, reject)
         }, reject)
       })
     },
@@ -65,9 +66,8 @@ const store = new Vuex.Store({
     },
     modifyUser (context, data) {
       return new Promise((resolve, reject) => {
-        api.putUserInfo(data).then(data => {
-          context.commit('setUser', data)
-          resolve(data)
+        api.putUserInfo(data).then(() => {
+          context.dispatch('queryUser').then(resolve, reject)
         }, reject)
       })
     }

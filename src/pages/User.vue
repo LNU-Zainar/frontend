@@ -18,7 +18,7 @@
               </el-form-item>
 
               <el-form-item label="个人简介" prop="description">
-                <el-input type="textarea" v-model="form.desc" rows="5"></el-input>
+                <el-input type="textarea" v-model="form.description" rows="5"></el-input>
               </el-form-item>
             </div>
 
@@ -113,7 +113,7 @@ export default {
   },
   data() {
     const user = this.$store.state.user
-    const tab = this.$route.query.tab || 'posts'
+    const tab = this.$route.query.tab || 'profile'
     return {
       activeTab: tab,
       tabPosition: 'left',
@@ -127,7 +127,7 @@ export default {
         nickname: user.nickname,
         phone: user.phone,
         email: user.email,
-        desc: user.desc,
+        description: user.description,
         avatar: user.avatar
       },
       formRules: {
@@ -156,7 +156,7 @@ export default {
           { required: true, message: '请再次输入新密码', trigger: 'blur' },
           {
             validator: (rule, value, callback) => {
-              if (value !== this.registerForm.password) {
+              if (value !== this.passwordForm.password) {
                 callback(new Error('两次输入密码不一致!'))
               } else {
                 callback()

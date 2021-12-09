@@ -25,7 +25,7 @@ const userInfo = {
   avatar: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
   phone: '18374384851',
   email: 'simon@gmail.com',
-  desc: '岭师校园拾荒者'
+  description: '岭师校园拾荒者'
 }
 
 route('POST /auth/register', res => {
@@ -55,7 +55,7 @@ route('POST /auth/logout', res => {
   })
 })
 
-route('GET /userinfo', res => {
+route('GET /users', res => {
   res.json({
     code: isLogin ? 200 : 403,
     message: 'ok',
@@ -63,9 +63,15 @@ route('GET /userinfo', res => {
   })
 })
 
-route('PUT /userinfo', {
+route('PUT /users', {
   code: 200,
   message: '更新成功',
+  data: userInfo
+})
+
+route('PATCH /users', {
+  code: 200,
+  message: '密码修改成功',
   data: userInfo
 })
 
@@ -300,7 +306,7 @@ route('POST /items', {
   data: {}
 })
 
-route('GET /item/:id', {
+route('GET /items/:id', {
   code: 200, 
   message: 'ok',
   data: {
@@ -324,13 +330,6 @@ route('GET /item/:id', {
   }
 })
 
-route('PUT /item/:id', {
-  code: 200, 
-  message: '更新成功', 
-  data: {}
-})
-
-
 route('GET /category', {
   code: 200,
   message: 'ok', 
@@ -353,7 +352,7 @@ route('GET /auth/captcha.png', res => {
   res.sendFile(path.resolve(__dirname, './captcha.png'))
 })
 
-route('GET /user/items', {
+route('GET /item', {
   code: 200,
   message: 'ok',
   data: {
@@ -572,7 +571,13 @@ route('GET /user/items', {
   }
 })
 
-route('DELETE /items/:id', {
+route('PUT /item/:id', {
+  code: 200, 
+  message: '更新成功', 
+  data: {}
+})
+
+route('DELETE /item/:id', {
   code: 200, 
   message: '删除成功', 
   data: {}

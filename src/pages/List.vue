@@ -35,10 +35,12 @@ export default {
     ListItem
   },
   data () {
+    const query = this.$route.query
+    
     return {
       formModel: {
         keyword: undefined,
-        location: undefined,
+        location: query.location,
         category: undefined,
         date: []
       },

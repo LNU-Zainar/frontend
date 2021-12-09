@@ -5,7 +5,7 @@
       <nav class="nav">
         <ul class="nav-list">
           <li v-for="link in routerLinks" :key="link.text">
-            <router-link :to="link.to">{{link.text}}</router-link>
+            <router-link :to="link.to" :class="{'is-active': $route.name === link.to.name}">{{link.text}}</router-link>
           </li>
         </ul>
       </nav>
@@ -53,11 +53,11 @@ export default {
     return {
       routerLinks: [
         {
-          to: '/',
+          to: { name: 'index' },
           text: '失物招领'
         },
         {
-          to: '/map',
+          to: { name: 'map' },
           text: '地图查找'
         }
       ]
@@ -140,7 +140,7 @@ export default {
         opacity: 0;
       }
 
-    &.router-link-exact-active  {
+    &.is-active  {
       color: rgba($primaryColor, 1);
       &:after {
         opacity: 1;

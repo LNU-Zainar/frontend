@@ -64,6 +64,7 @@
 
 <script>
 import { v4 as uuidv4 } from 'uuid'
+import { mapGetters } from 'vuex'
 
 export default {
   name: '',
@@ -119,6 +120,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'isLogin'
+    ]),
     captchaUrl () {
       return process.env.VUE_APP_SERVER_URL + '/auth/captcha.png?cur_id=' + this.uuid
     }
@@ -128,6 +132,11 @@ export default {
       immediate: true,
       handler (value) {
         this.activeType = value || 'login'
+      }
+    },
+    isLogin (isLogin) {
+      if (isLogin) {
+        this.redirectToBack()
       }
     }
   },

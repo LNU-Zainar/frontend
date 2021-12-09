@@ -16,7 +16,7 @@ const instance = axios.create({
     proxyBaseDir: '/proxy',
     mock: false,
     proxy: true,
-    apiMode: 'm',
+    apiMode: 'p',
     description: '',
     payload: null,
     notifyType: 'sf', // s是Success，f是Failure
