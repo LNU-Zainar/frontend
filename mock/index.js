@@ -578,4 +578,14 @@ route('DELETE /items/:id', {
   data: {}
 })
 
+route('GET /map_location', {
+  code: 200,
+  message: 'ok',
+  data: [
+    { location_name: '图书馆', location_id: '0', position: [110.348158, 21.269088], items_total: 302 },
+    { location_name: '第三教学楼', location_id: '1', position: [110.346233, 21.269882], items_total: 35 },
+    { location_name: '第四教学楼', location_id: '2', position: [110.343287, 21.26612], items_total: 8 }
+  ]
+})
+
 module.exports = router

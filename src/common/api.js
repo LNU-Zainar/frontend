@@ -23,7 +23,8 @@ const APIDescriptions = {
   getLocation: 'GET /location',
   getUserItems: 'GET /user/items',
   deleteUserItem: 'DELETE /items/:id',
-  modifyPassword: 'PATCH /users'
+  modifyPassword: 'PATCH /users',
+  getMapLocation: 'GET /map_location'
 }
 
 export const register = createAPI(APIDescriptions.register)
@@ -41,3 +42,4 @@ export const getLocation = createAPI(APIDescriptions.getLocation)
 export const getUserItems = createAPI(APIDescriptions.getUserItems)
 export const deleteUserItem = createAPI(APIDescriptions.deleteUserItem)
 export const modifyPassword = createAPI(APIDescriptions.modifyPassword)
+export const getMapLocation = createAPI(APIDescriptions.getMapLocation)

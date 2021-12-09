@@ -16,3 +16,52 @@ ul, li {
 a {
   text-decoration: none;
 }
+
+.amap-logo, .amap-copyright {
+  display: none !important;
+}
+.amap-info-close {
+  display: none;
+}
+.map-marker {
+  display: flex;
+  align-items: center;
+  &-img {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 25px;
+    height: 35px;
+    font-size: 12px;
+    line-height: 25px;
+    background: url("/images/marker_red.png") center no-repeat;
+    text-indent: -1px;
+    background-size: contain;
+    text-align: center;
+    color: #fff;
+  }
+  &-label {
+    display: none;
+    font-size: 13px;
+    white-space: nowrap;
+    text-shadow: 0px 0px 1px 1px rgba(255,255,255, .5);
+    color: #fff;
+  }
+  &:hover &-img {
+    background-image: url("/images/marker_blue.png");
+  }
+}
+.info-window {
+  .location-name {
+    margin: 0;
+    padding-bottom: 5px;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  .detail {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+  .count {
+    font-weight: bold;
+    color: $primaryColor;
+  }
+}

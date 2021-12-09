@@ -1,63 +1,183 @@
 <template>
   <div class="map">
-    <div id="container"></div>
+    <div id="container"
+      v-loading="isLoading"
+      element-loading-text="地图加载中"
+      element-loading-background="#1a1a1a">
+    </div>
   </div>
 </template>
 
 <script>
+import path from './path.json'
+import * as api from '@/common/api'
+
 export default {
+  data () {
+    return {
+      isLoading: false,
+      locations: []
+    }
+  },
   mounted () {
-    let script = document.createElement('script')
-    script.src = 'https://webapi.amap.com/maps?v=1.4.15&key=e765ee2c909344df70d61e4a6852adc5&plugin=AMap.PlaceSearch'
-    script.onload = this.initMap
-    document.head.append(script)
-    this.script = script
+    this.map = null
+    this.infoWindow = null
+
+    this.isLoading = true
+    Promise.all([
+      this.loadSDK().then(this.initMap),
+      this.fetchData()
+    ]).then(() => {
+      this.addMarkers()
+    }).finally(() => {
+      this.isLoading = false
+    })
   },
   destroyed () {
     this.script.remove()
   },
   methods: {
+    fetchData () {
+      return api.getMapLocation(null, {
+        notifyType: 'f'
+      }).then(data => {
+        this.locations = data
+      })
+    },
+    loadSDK () {
+      return new Promise((resolve, reject) => {
+        let script = document.createElement('script')
+        script.src = 'https://webapi.amap.com/maps?v=2.0&key=e765ee2c909344df70d61e4a6852adc5'
+        script.onload = resolve
+        script.onerror = reject
+        document.head.append(script)
+        this.script = script
+      })
+    },
     initMap () {
-      let AMap = window.AMap
-      console.log(AMap)
-      var map = new AMap.Map('container', {
-        resizeEnable: true,
-        zoom: 12,
-        viewMode: '3D',
-        center:[110.347124,21.268979],
-        layers:[
-            new AMap.TileLayer.RoadNet({
-                zIndex:20
-            })
-        ]
-      });
-      new AMap.PlaceSearch({
-          extensions:'all',
-          subdistrict:0
-      }).search('岭南师范学院',function(status,result){
-        console.log(result)
-          // 外多边形坐标数组和内多边形坐标数组
-          var outer = [
-              new AMap.LngLat(-360,90,true),
-              new AMap.LngLat(-360,-90,true),
-              new AMap.LngLat(360,-90,true),
-              new AMap.LngLat(360,90,true),
-          ];
-          var holes = result.districtList[0].boundaries
+      const AMap = window.AMap
+      const bounds = [path.map(item => [item.R, item.Q])]
 
-          var pathArray = [
-              outer
-          ];
-          pathArray.push.apply(pathArray,holes)
-          var polygon = new AMap.Polygon( {
-              pathL:pathArray,
-              strokeColor: '#00eeff',
-              strokeWeight: 1,
-              fillColor: '#71B3ff',
-              fillOpacity: 0.5
-          });
-          polygon.setPath(pathArray);
-          map.add(polygon)
+      const map = new AMap.Map('container', {
+        // mask: bounds,
+        resizeEnable: true,
+        rotateEnable: true,
+        pitchEnable: true,
+        showLabel: true,
+        labelzIndex: 999,
+        rotation: 0,
+        zoom: 16,
+        viewMode:'2D',
+        pitch: 50,
+        center: [110.347924, 21.268779],
+        mapStyle: 'amap://styles/dark',
+        layers: [
+          new AMap.createDefaultLayer({
+            visible: true,
+            zIndex: 0
+          }),
+          new AMap.Buildings({
+            zIndex: 9,
+            heightFactor: 2
+          })
+        ]
+      })
+
+      const infoWindow = new AMap.InfoWindow({
+        position: location.position,
+        anchor: 'top-left'
+      })
+
+      const area = new AMap.Polygon({
+        zIndex: 1,
+        path: bounds,
+        strokeColor: '#0066ff',
+        strokeWeight: 2,
+        fillColor: '#71B3ff',
+        fillOpacity: .2
+      })
+      map.add(area)
+
+      this.infoWindow = infoWindow
+      this.map = map
+    
+      // const outer = [
+      //   new AMap.LngLat(-360,90,true),
+      //   new AMap.LngLat(-360,-90,true),
+      //   new AMap.LngLat(360,-90,true),
+      //   new AMap.LngLat(360,90,true)
+      // ]
+      // const pathArray = [outer, ...bounds]
+      // const mask = new AMap.Polygon({
+      //   zIndex: 1,
+      //   pathL: pathArray,
+      //   strokeColor: '#0066ff',
+      //   strokeWeight: 1,
+      //   fillColor: '#71B3ff',
+      //   fillOpacity: .5
+      // })
+      // mask.setPath(pathArray)
+      // map.add(mask)
+    },
+    addMarkers () {
+      const AMap = window.AMap
+      const infoWindow = this.infoWindow
+      const map = this.map
+
+      const markerOver = (e) => {
+        infoWindow.setContent(e.target._originOpts.infoContent)
+        infoWindow.open(map, e.target.getPosition())
+      }
+
+      const markerOut = () => {
+        infoWindow.close(map)
+      }
+
+      const markerClick = (e) => {
+        const location = e.target._originOpts.location
+        this.$router.push({
+          name: 'index',
+          query: {
+            location: location.location_id
+          }
+        })
+      }
+
+      this.locations.forEach(item => {
+        const markerContent = `
+        <div class="map-marker">
+          <div class="map-marker-img">
+            ${item.items_total > 99 ? '99+' : item.items_total}
+          </div>
+          <div class="map-marker-label">
+            ${item.location_name}
+          </div>
+        </div>
+        `
+        
+        const infoContent = `
+        <div class="info-window">
+          <h6 class="location-name">${item.location_name}</h6>
+          <p class="detail">
+            一共<strong class="count">${item.items_total}</strong>件遗失物品
+          </p>
+        </div>
+        `
+
+        const marker = new AMap.Marker({
+          content: markerContent,
+          anchor: 'bottom-left',
+          infoContent,
+          location: item,
+          position: item.position,
+          offset: new AMap.Pixel(-12, 0)
+        })
+
+        marker.on('mouseover', markerOver)
+        marker.on('mouseout', markerOut)
+        marker.on('click', markerClick)
+
+        map.add(marker)
       })
     }
   }
@@ -66,7 +186,11 @@ export default {
 
 <style lang="scss" scoped>
 #container {
-  width: 100%;
-  height: 500px;
+  position: absolute;
+  background: #1a1a1a;
+  left: 0;
+  right: 0;
+  top: 50px;
+  bottom: 0;
 }
 </style>
