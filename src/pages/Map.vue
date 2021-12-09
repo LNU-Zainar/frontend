@@ -11,6 +11,7 @@
 <script>
 import path from './path.json'
 import * as api from '@/common/api'
+/* global AMap */
 
 export default {
   data () {
@@ -23,7 +24,6 @@ export default {
     this.map = null
     this.infoWindow = null
 
-    this.isLoading = true
     Promise.all([
       this.loadSDK().then(this.initMap),
       this.fetchData()
@@ -58,7 +58,6 @@ export default {
       })
     },
     initMap () {
-      const AMap = window.AMap
       const bounds = [path.map(item => [item.R, item.Q])]
 
       const map = new AMap.Map('container', {
@@ -123,7 +122,6 @@ export default {
       // map.add(mask)
     },
     addMarkers () {
-      const AMap = window.AMap
       const infoWindow = this.infoWindow
       const map = this.map
 

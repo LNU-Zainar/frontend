@@ -67,7 +67,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     pointer-events: none;
     color: rgba(255,255,255, .6);
     text-shadow: 1px 0 0 black, 0 1px 0 black, -1px 0 0 black,0 -1px 0 black
