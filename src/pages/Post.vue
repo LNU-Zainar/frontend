@@ -11,7 +11,7 @@
         </el-descriptions-item>
 
         <el-descriptions-item label="物品分类">
-          <el-tag size="small" effect="plain">
+          <el-tag size="small" effect="plain" v-if="post.category_name">
             {{ post.category_name }}
           </el-tag>
         </el-descriptions-item>

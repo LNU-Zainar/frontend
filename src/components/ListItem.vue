@@ -11,9 +11,9 @@
         <el-tag effect="plain" size="small" class="item-category" v-if="item.category_name">
           {{ item.category_name }}
         </el-tag>
-        <item class="item-title">
+        <div class="item-title">
           {{ item.title }}
-        </item>
+        </div>
       </div>
       <div class="item-description">
         {{ item.description }}
@@ -81,7 +81,7 @@ export default {
   border: 1px solid transparent;
   border-bottom-color: #e5e5e5;
   margin-top: -1px;
-  padding: 15px;
+  padding: 12px;
   transition: box-shadow .2s;
 
   &:not(.is-skeleton):hover {

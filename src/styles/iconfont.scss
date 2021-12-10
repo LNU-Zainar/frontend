@@ -13,16 +13,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-tag:before {
+  content: "\e605";
+}
+
+.icon-happy:before {
+  content: "\e60a";
+}
+
 .icon-plus:before {
   content: "\e603";
 }
 
 .icon-sad:before {
   content: "\e67a";
-}
-
-.icon-happy:before {
-  content: "\e60a";
 }
 
 .icon-user:before {
@@ -33,6 +37,6 @@
   content: "\e655";
 }
 
-.icon-category:before {
+.icon-item:before {
   content: "\e636";
 }

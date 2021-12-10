@@ -1,7 +1,9 @@
 <template>
   <header class="header">
     <div class="header-wrap">
-      <router-link to="/" class="logo">Zainar</router-link>
+      <div class="logo">
+        <router-link to="/" class="logo-link">Zainar</router-link>
+      </div>
       <nav class="nav">
         <ul class="nav-list">
           <li v-for="link in routerLinks" :key="link.text">
@@ -58,7 +60,7 @@ export default {
         {
           to: { name: 'index' },
           text: '失物招领',
-          icon: 'iconfont icon-category'
+          icon: 'iconfont icon-item'
         },
         {
           to: { name: 'map' },
@@ -122,18 +124,21 @@ export default {
 
 .logo {
   flex-basis: 25%;
-  margin-left: 10px;
-  font-size: 22px;
-  font-weight: bold;
-  color: rgba($primaryColor, 1);
+
+  &-link {
+    font-size: 22px;
+    font-weight: bold;
+    color: rgba($primaryColor, 1);
+  }
 }
 
 .nav {
   flex-basis: 50%;
   &-list {
     display: flex;
+    justify-content: center;
     li {
-      padding: 0 18px;
+      padding: 0 16px;
       line-height: 50px;
     }
     a {
