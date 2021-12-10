@@ -68,7 +68,7 @@ export default {
         {
           to: { name: 'about' },
           text: '关于我们',
-          icon: 'iconfont icon-sad'
+          icon: 'iconfont icon-happy'
         }
       ]
     }

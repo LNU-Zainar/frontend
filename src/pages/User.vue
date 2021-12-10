@@ -310,6 +310,7 @@ export default {
     display: flex;
     align-items: stretch;
     min-height: 300px;
+    border-radius: 5px;
   }
   ::v-deep .el-tabs__header {
     height: auto;

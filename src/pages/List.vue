@@ -6,7 +6,8 @@
         <ListItem v-for="i in 5" :key="i" :is-skeleton="true"/>
       </template>
       <template v-else-if="lostItems.length">
-        <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click="handleItemClick(item)"/>
+        <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click="handleItemClick(item)">
+        </ListItem>
       </template>
       <el-empty v-else description="暂无物品招领信息"></el-empty>
     </div>

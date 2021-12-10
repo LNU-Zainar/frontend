@@ -14,24 +14,27 @@
     <h2>团队成员</h2>
     <div class="members">
       <div class="member" v-for="member in members" :key="member.name">
-        <el-avatar :src="member.avatar"></el-avatar>
-        <span>{{ member.name }}</span>
+        <el-avatar :src="member.avatar" :size="50"></el-avatar>
+        <strong>{{ member.name }}</strong>
       </div>
     </div>
 
-    <p style="text-align: center">We come from ❤️ 博雅苑210#108</p>
+    <p class="slogan">
+      我们是来自计智院2019级计科3班的一个小团队。<br>
+      Talk is cheap. Show me the code.
+    </p>
 
     <h2>联系我们</h2>
-    <p>邮件地址：chillyond@gmail.com</p>
-    <p>联系地址：岭南师范学院计智院2019级计科3班</p>
+    <p>邮箱地址：chillyond@gmail.com</p>
+    <p>联系地址：湛江市岭南师范学院博雅苑210栋108室</p>
 
     <h2>赞助打赏</h2>
-    <p>如果您觉得我们的项目给您提供了小小的帮助，您可以通过微信扫描以下打赏码，为我们赞助一杯咖啡钱。</p>
+    <p>如果您觉得我们的项目给您提供了小小的帮助，您可以通过微信扫描以下打赏码，为我们赞助一杯咖啡钱：）</p>
     <div class="buy-me-a-coffee">
       <el-image src="/images/buy-me-a-coffee.png"></el-image>
       <el-image src="/images/qrcode.png" class="qrcode"></el-image>
     </div>
-    <p>祝您有美好的一天：）</p>
+    <p>祝您有美好的一天，今后不再丢三落四❤️</p>
   </div>
 </template>
 
@@ -63,6 +66,7 @@ export default {
   .top-banner {
     width: 100%;
     height: 350px;
+    border-radius: 5px;
   }
   .members {
     display: flex;
@@ -74,6 +78,24 @@ export default {
       .el-avatar {
         margin-right: 5px;
       }
+    }
+  }
+  .slogan {
+    padding: 1em;
+    text-align: center;
+    line-height: 1;
+
+    &:before, &:after {
+      vertical-align: middle;
+      font-size: 28px;
+      color: #909399;
+    }
+    &:before {
+      content: "“";
+      
+    }
+    &:after {
+      content: "”";
     }
   }
   .buy-me-a-coffee {
