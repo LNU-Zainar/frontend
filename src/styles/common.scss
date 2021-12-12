@@ -23,6 +23,14 @@ a {
 .amap-info-close {
   display: none;
 }
+.amap-maps {
+  opacity: 0;
+}
+.is-complete {
+  .amap-maps {
+    opacity: 1;
+  }
+}
 .map-marker {
   display: flex;
   align-items: center;
