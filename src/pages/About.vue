@@ -25,7 +25,11 @@
     </p>
 
     <h2>联系我们</h2>
-    <p>邮箱地址：chillyond@gmail.com</p>
+    <p>邮箱地址：<a href="mailto:chillyond@gmail.com">
+      <el-button type="text" style="font-size: inherit;">
+        chillyond@gmail.com
+      </el-button>
+    </a></p>
     <p>联系地址：湛江市岭南师范学院博雅苑210栋108室</p>
 
     <h2>赞助打赏</h2>
