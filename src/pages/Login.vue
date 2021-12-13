@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <header class="header">
-      <a href="/" class="logo">Zainar</a>
+      <a href="/" class="logo"></a>
     </header>
     <main class="main">
       <el-tabs v-model="activeType" @tab-click="handleClick">
@@ -226,9 +226,11 @@ export default {
   margin: 50px auto;
 }
 .logo {
-  font-size: 28px;
-  font-weight: bold;
-  color: $primaryColor;
+  display: block;
+  margin: auto;
+  width: 120px;
+  height: 30px;
+  background: url('../assets/logo.png') no-repeat center / contain;
 }
 .captcha-img {
   display: inline-block;

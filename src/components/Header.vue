@@ -2,7 +2,8 @@
   <header class="header">
     <div class="header-wrap">
       <div class="logo">
-        <router-link to="/" class="logo-link">Zainar</router-link>
+        <router-link to="/" class="logo-link">
+        </router-link>
       </div>
       <nav class="nav">
         <ul class="nav-list">
@@ -126,9 +127,13 @@ export default {
   flex-basis: 25%;
 
   &-link {
+    display: block;
+    width: 100px;
+    height: 22px;
     font-size: 22px;
     font-weight: bold;
     color: rgba($primaryColor, 1);
+    background: url('../assets/logo.png') no-repeat left / contain;
   }
 }
 
